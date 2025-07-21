@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeBuilder Pro - AI-Powered Professional Resume Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="ResumeBuilder.css">
+</head>
+
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="glass-morphism text-white shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+        <div class="container mx-auto px-0.1 py-5 relative z-10">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="w-14 h-14 bg-white/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30">
+                        <i class="fas fa-file-alt text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1
+                            class="text-3xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                            ResumeBuilder Pro</h1>
+                        <p class="text-white/80 text-sm font-medium">AI-Powered Professional Resume Builder</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="completion-indicator">
+                        <span class="text-white/90 text-sm font-medium">Progress:</span>
+                        <div class="completion-bar">
+                            <div id="overall-progress" class="completion-fill" style="width: 20%"></div>
+                        </div>
+                        <span id="progress-text" class="text-white/90 text-sm">20%</span>
+                    </div>
+                    <button onclick="saveProgress()" class="btn-secondary text-sm">
+                        <i class="fas fa-save mr-2"></i>Save
+                    </button>
+                    <button onclick="loadProgress()" class="btn-secondary text-sm">
+                        <i class="fas fa-folder-open mr-2"></i>Load
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating particles effect -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse"
+                style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="absolute w-1 h-1 bg-white/30 rounded-full animate-pulse"
+                style="top: 60%; left: 80%; animation-delay: 1s;"></div>
+            <div class="absolute w-3 h-3 bg-white/10 rounded-full animate-pulse"
+                style="top: 40%; left: 60%; animation-delay: 2s;"></div>
+        </div>
+    </header>
+
+
+    <div class="container mx-auto px-0 py-8">
+        <!-- Progress Steps -->
+        <div class="mb-12">
+            <div class="glass-morphism rounded-3xl p-9 mb-8">
+                <div class="progress-bar mb-10">
+                    <div id="main-progress" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col items-center group">
+                        <div id="step-1"
+                            class="step-active w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-lg transition-all duration-300">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <span class="mt-3 font-semibold text-white text-sm">Template</span>
+                        <div class="completion-indicator mt-1">
+                            <div class="completion-bar w-16">
+                                <div id="step-1-progress" class="completion-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 h-1 bg-white/20 mx-4 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-green-400 to-blue-500 w-0 transition-all duration-500"
+                            id="connector-1"></div>
+                    </div>
+                    <div class="flex flex-col items-center group">
+                        <div id="step-2"
+                            class="step-inactive w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-lg transition-all duration-300">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span class="mt-3 font-semibold text-white/60 text-sm">Personal Info</span>
+                        <div class="completion-indicator mt-1">
+                            <div class="completion-bar w-16">
+                                <div id="step-2-progress" class="completion-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 h-1 bg-white/20 mx-4 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-green-400 to-blue-500 w-0 transition-all duration-500"
+                            id="connector-2"></div>
+                    </div>
+                    <div class="flex flex-col items-center group">
+                        <div id="step-3"
+                            class="step-inactive w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-lg transition-all duration-300">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <span class="mt-3 font-semibold text-white/60 text-sm">Experience</span>
+                        <div class="completion-indicator mt-1">
+                            <div class="completion-bar w-16">
+                                <div id="step-3-progress" class="completion-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 h-1 bg-white/20 mx-4 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-green-400 to-blue-500 w-0 transition-all duration-500"
+                            id="connector-3"></div>
+                    </div>
+                    <div class="flex flex-col items-center group">
+                        <div id="step-4"
+                            class="step-inactive w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-lg transition-all duration-300">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <span class="mt-3 font-semibold text-white/60 text-sm">Skills</span>
+                        <div class="completion-indicator mt-1">
+                            <div class="completion-bar w-16">
+                                <div id="step-4-progress" class="completion-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 h-1 bg-white/20 mx-4 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-green-400 to-blue-500 w-0 transition-all duration-500"
+                            id="connector-4"></div>
+                    </div>
+                    <div class="flex flex-col items-center group">
+                        <div id="step-5"
+                            class="step-inactive w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-lg transition-all duration-300">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <span class="mt-3 font-semibold text-white/60 text-sm">Preview</span>
+                        <div class="completion-indicator mt-1">
+                            <div class="completion-bar w-16">
+                                <div id="step-5-progress" class="completion-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Form Section -->
+            <div class="section-card">
+                <!-- Step 1: Template Selection -->
+                <div id="section-1" class="form-section active">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-3xl font-bold gradient-text">Choose Your Resume Template</h2>
+                        <div class="typing-indicator">
+                            <span class="text-sm text-gray-500 mr-2">AI analyzing...</span>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                    <div class="ai-suggestion mb-6">
+                        <h3 class="font-semibold mb-2">🤖 AI Recommendation</h3>
+                        <p class="text-sm opacity-90">Based on current trends, the <strong>Modern
+                                Professional</strong>
+                            template performs 40% better for tech roles, while <strong>Classic Traditional</strong>
+                            is
+                            preferred for corporate positions.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="template-card border-2 border-gray-200 rounded-2xl p-6 bg-gradient-to-br from-white to-gray-50"
+                            onclick="selectTemplate('modern')">
+                            <div
+                                class="bg-gradient-to-r from-blue-500 to-purple-600 h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <div class="relative z-10 text-center">
+                                    <i class="fas fa-laptop-code text-3xl text-white mb-2"></i>
+                                    <span class="text-white font-bold text-lg">Modern</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-bold text-lg text-gray-800">Modern Professional</h3>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">Recommended</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Clean design perfect for tech and creative roles
+                            </p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="mr-3">4.9/5</span>
+                                <i class="fas fa-download mr-1"></i>
+                                <span>12.5k downloads</span>
+                            </div>
+                        </div>
+                        <div class="template-card border-2 border-gray-200 rounded-2xl p-6 bg-gradient-to-br from-white to-gray-50"
+                            onclick="selectTemplate('classic')">
+                            <div
+                                class="bg-gradient-to-r from-gray-600 to-gray-800 h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <div class="relative z-10 text-center">
+                                    <i class="fas fa-building text-3xl text-white mb-2"></i>
+                                    <span class="text-white font-bold text-lg">Classic</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-bold text-lg text-gray-800">Classic Traditional</h3>
+                                <span
+                                    class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">Popular</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Traditional format ideal for corporate positions
+                            </p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="mr-3">4.7/5</span>
+                                <i class="fas fa-download mr-1"></i>
+                                <span>8.2k downloads</span>
+                            </div>
+                        </div>
+                        <div class="template-card border-2 border-gray-200 rounded-2xl p-6 bg-gradient-to-br from-white to-gray-50"
+                            onclick="selectTemplate('creative')">
+                            <div
+                                class="bg-gradient-to-r from-pink-500 to-orange-500 h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <div class="relative z-10 text-center">
+                                    <i class="fas fa-paint-brush text-3xl text-white mb-2"></i>
+                                    <span class="text-white font-bold text-lg">Creative</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-bold text-lg text-gray-800">Creative Design</h3>
+                                <span
+                                    class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">Trending</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Eye-catching design for creative industries</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="mr-3">4.8/5</span>
+                                <i class="fas fa-download mr-1"></i>
+                                <span>6.7k downloads</span>
+                            </div>
+                        </div>
+                        <div class="template-card border-2 border-gray-200 rounded-2xl p-6 bg-gradient-to-br from-white to-gray-50"
+                            onclick="selectTemplate('minimal')">
+                            <div
+                                class="bg-gradient-to-r from-gray-400 to-gray-600 h-40 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/10"></div>
+                                <div class="relative z-10 text-center">
+                                    <i class="fas fa-circle text-3xl text-white mb-2"></i>
+                                    <span class="text-white font-bold text-lg">Minimal</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-bold text-lg text-gray-800">Minimal Clean</h3>
+                                <span
+                                    class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full font-medium">Elegant</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Simple and elegant for any profession</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="mr-3">4.6/5</span>
+                                <i class="fas fa-download mr-1"></i>
+                                <span>5.1k downloads</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="stats-card">
+                            <div class="text-2xl font-bold text-gray-800">4</div>
+                            <div class="text-sm text-gray-600">Templates Available</div>
+                        </div>
+                        <button onclick="nextStep()" class="btn-primary">
+                            <i class="fas fa-arrow-right mr-2"></i>Continue to Personal Info
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Personal Information -->
+                    <div id="section-2" class="form-section">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Personal Information</h2>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name :</label>
+                                    <input type="text" id="firstName"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="John" onchange="updatePreview()" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name :</label>
+                                    <input type="text" id="lastName"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Doe" onchange="updatePreview()" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Professional Title :</label>
+                                <input type="text" id="title"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Software Developer / Marketing Specialist / Data Analyst"
+                                    onchange="updatePreview()" required>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email :</label>
+                                    <input type="email" id="email"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="john.doe@email.com" onchange="updatePreview()" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone :</label>
+                                    <input type="tel" id="phone"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="+1 (555) 123-4567" onchange="updatePreview()" required>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">LinkedIn :</label>
+                                    <input type="url" id="linkedin"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="linkedin.com/in/johndoe" onchange="updatePreview()" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Portfolio/GitHub
+                                        :</label>
+                                    <input type="url" id="portfolio"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="github.com/johndoe" onchange="updatePreview()" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Location :</label>
+                                <input type="text" id="location"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="New York, NY" onchange="updatePreview()" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Professional Summary
+                                    :</label>
+                                <textarea id="summary" rows="4"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Brief description of your professional background, key skills, and career objectives..."
+                                    onchange="updatePreview()" required></textarea>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-6">
+                            <button type="submit" onclick="prevStep()"
+                                class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">Previous</button>
+                            <button type="submit" onclick="nextStep()"
+                                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Next
+                                Step</button>
+                        </div>
+                    </div>
+
+                <!-- Step 3: Experience & Education -->
+                <div id="section-3" class="form-section">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Experience & Education</h2>
+
+                    <!-- Education Section -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Education</h3>
+                        <div id="education-list" class="space-y-4">
+                            <div class="education-item border border-gray-200 rounded-lg p-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Degree *</label>
+                                        <input type="text"
+                                            class="degree w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Bachelor of Science in Computer Science"
+                                            onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Institution
+                                            *</label>
+                                        <input type="text"
+                                            class="institution w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="University of Technology" onchange="updatePreview()">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Start
+                                            Year</label>
+                                        <input type="number"
+                                            class="start-year w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="2020" onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">End Year</label>
+                                        <input type="number"
+                                            class="end-year w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="2024" onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">GPA
+                                            (Optional)</label>
+                                        <input type="text"
+                                            class="gpa w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="3.8/4.0" onchange="updatePreview()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="addEducation()"
+                            class="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">+
+                            Add Education</button>
+                    </div>
+
+                    <!-- Experience Section -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Work Experience</h3>
+                        <div id="experience-list" class="space-y-4">
+                            <div class="experience-item border border-gray-200 rounded-lg p-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Job
+                                            Title</label>
+                                        <input type="text"
+                                            class="job-title w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Software Developer Intern" onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                                        <input type="text"
+                                            class="company w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Tech Solutions Inc." onchange="updatePreview()">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Start
+                                            Date</label>
+                                        <input type="month"
+                                            class="start-date w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                                        <input type="month"
+                                            class="end-date w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            onchange="updatePreview()">
+                                        <label class="flex items-center mt-2">
+                                            <input type="checkbox" class="current-job mr-2"
+                                                onchange="toggleCurrentJob(this)">
+                                            <span class="text-sm text-gray-600">Currently working here</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                    <textarea
+                                        class="description w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        rows="3"
+                                        placeholder="• Developed web applications using React and Node.js&#10;• Collaborated with team of 5 developers on agile projects&#10;• Improved application performance by 30%"
+                                        onchange="updatePreview()"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="addExperience()"
+                            class="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">+
+                            Add Experience</button>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button onclick="prevStep()"
+                            class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">Previous</button>
+                        <button onclick="nextStep()"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Next
+                            Step</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Skills & Projects -->
+                <div id="section-4" class="form-section">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Skills & Projects</h2>
+
+                    <!-- Skills Section -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Skills</h3>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Add Skills (Press Enter to
+                                add)</label>
+                            <input type="text" id="skill-input"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="JavaScript, Python, React, etc." onkeypress="addSkill(event)">
+                        </div>
+                        <div id="skills-display" class="mb-4">
+                            <!-- Skills will be displayed here -->
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+                            <button onclick="addPredefinedSkill('JavaScript')"
+                                class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">JavaScript</button>
+                            <button onclick="addPredefinedSkill('Python')"
+                                class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Python</button>
+                            <button onclick="addPredefinedSkill('React')"
+                                class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">React</button>
+                            <button onclick="addPredefinedSkill('Node.js')"
+                                class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Node.js</button>
+                            <button onclick="addPredefinedSkill('SQL')"
+                                class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">SQL</button>
+                            <button onclick="addPredefinedSkill('Git')"
+                                class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">Git</button>
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Projects</h3>
+                        <div id="projects-list" class="space-y-4">
+                            <div class="project-item border border-gray-200 rounded-lg p-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Project
+                                            Name</label>
+                                        <input type="text"
+                                            class="project-name w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="E-commerce Website" onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Technologies
+                                            Used</label>
+                                        <input type="text"
+                                            class="project-tech w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="React, Node.js, MongoDB" onchange="updatePreview()">
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Project URL
+                                        (Optional)</label>
+                                    <input type="url"
+                                        class="project-url w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="https://github.com/username/project" onchange="updatePreview()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                    <textarea
+                                        class="project-description w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        rows="3"
+                                        placeholder="• Built a full-stack e-commerce platform with user authentication&#10;• Implemented payment processing and inventory management&#10;• Deployed on AWS with 99.9% uptime"
+                                        onchange="updatePreview()"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="addProject()"
+                            class="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">+
+                            Add Project</button>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button onclick="prevStep()"
+                            class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">Previous</button>
+                        <button onclick="nextStep()"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Next
+                            Step</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Preview & Download -->
+                <div id="section-5" class="form-section">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Preview & Download</h2>
+                    <div class="text-center mb-6">
+                        <p class="text-gray-600 mb-4">Your resume is ready! Review it and download when you're
+                            satisfied.</p>
+                        <div class="flex flex-wrap justify-center gap-4">
+                            <button onclick="downloadPDF()"
+                                class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center">
+                                📄 Download PDF
+                            </button>
+                            <button onclick="printResume()"
+                                class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                                🖨️ Print Resume
+                            </button>
+                            <button onclick="shareResume()"
+                                class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                                📤 Share Link
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="flex justify-between">
+                        <button onclick="prevStep()"
+                            class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">Previous</button>
+                        <button onclick="startOver()"
+                            class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">Create
+                            Another</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-container no-print">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-2xl font-bold gradient-text">Live Preview</h3>
+                        <p class="text-sm text-gray-600 mt-1">See your resume update in real-time</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex items-center bg-gray-100 rounded-lg p-1">
+                            <button onclick="zoomOut()" class="btn-secondary text-sm px-3 py-1">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <span id="zoom-level" class="px-4 py-1 text-sm font-medium">100%</span>
+                            <button onclick="zoomIn()" class="btn-secondary text-sm px-3 py-1">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                        </div>
+                        <button onclick="togglePreviewMode()" class="btn-secondary text-sm">
+                            <i class="fas fa-expand-alt mr-1"></i>Fullscreen
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 rounded-2xl p-4 mb-4">
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                <span class="text-gray-600">Auto-save enabled</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                                <span class="text-gray-600">ATS-friendly</span>
+                            </div>
+                        </div>
+                        <div class="text-gray-500">
+                            <i class="fas fa-clock mr-1"></i>
+                            Last updated: <span id="last-updated">now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-2 border-gray-200 rounded-2xl overflow-hidden bg-white shadow-inner"
+                    style="height: 900px; overflow-y: auto;">
+                    <div id="resume-preview"
+                        class="resume-preview bg-white p-8 transform-gpu transition-all duration-300"
+                        style="transform: scale(1); transform-origin: top left;">
+                        <!-- Resume preview will be generated here -->
+                        <div class="text-center text-gray-400 py-32">
+                            <div class="mb-6">
+                                <i class="fas fa-file-alt text-6xl text-gray-300 mb-4"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Your Resume Preview</h3>
+                            <p class="text-gray-500 mb-4">Fill out the form to see your professional resume</p>
+                            <div class="inline-flex items-center px-4 py-2 bg-blue-50 rounded-lg">
+                                <i class="fas fa-magic text-blue-500 mr-2"></i>
+                                <span class="text-blue-700 text-sm">AI-powered formatting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="floating-action">
+        <button onclick="showQuickHelp()"
+            class="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center">
+            <i class="fas fa-question text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Quick Help Modal -->
+    <div id="help-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold gradient-text">Quick Help</h3>
+                <button onclick="hideQuickHelp()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-lightbulb text-yellow-500 mt-1"></i>
+                    <div>
+                        <h4 class="font-semibold">Pro Tip</h4>
+                        <p class="text-sm text-gray-600">Use action verbs like "developed," "managed," "created" to
+                            make
+                            your experience more impactful.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-save text-blue-500 mt-1"></i>
+                    <div>
+                        <h4 class="font-semibold">Auto-Save</h4>
+                        <p class="text-sm text-gray-600">Your progress is automatically saved every 30 seconds.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-mobile-alt text-green-500 mt-1"></i>
+                    <div>
+                        <h4 class="font-semibold">Mobile Friendly</h4>
+                        <p class="text-sm text-gray-600">You can continue editing on any device.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="ResumeBuilder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+
+</html>
